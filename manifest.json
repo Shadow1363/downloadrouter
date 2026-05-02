@@ -1,13 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Download Router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Route downloads to specific folders based on priority rules (domain, file type, filename pattern).",
-  "permissions": [
-    "downloads",
-    "storage",
-    "contextMenus"
-  ],
+  "permissions": ["downloads", "storage", "contextMenus"],
   "background": {
     "service_worker": "background.js"
   },

@@ -3,7 +3,6 @@
 A free, open-source Chrome extension that automatically routes your downloads into organized folders based on custom priority rules — by domain, file type, or filename pattern.
 <img width="471" height="237" alt="Screenshot 2026-05-02 at 01 33 47" src="https://github.com/user-attachments/assets/3a90012d-46ca-4316-8552-56c903ad7113" />
 
-
 ## Features
 
 - **Priority-based rules** — define which rules take precedence when multiple match a download
@@ -40,3 +39,8 @@ A `.png` downloaded from `gameassets.com` lands in `Downloads/gameassets` — P1
 - [ ] UI improvements
 - [] Export Rules to JSON
 - [] More file options to download with Router (.pdf, .docx, .xlsx, etc.)
+
+## Credits
+
+- Lucide Icons
+- MacOsIcons.com (Reason I made the extension in the first place)

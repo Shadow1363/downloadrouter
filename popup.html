@@ -105,6 +105,14 @@
         cursor: pointer;
         letter-spacing: 0.04em;
         transition: opacity 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .add-btn svg {
+        width: 14px;
+        height: 14px;
+        display: block;
       }
       .add-btn:hover {
         opacity: 0.85;
@@ -135,6 +143,11 @@
       .empty-icon {
         font-size: 32px;
         opacity: 0.4;
+      }
+      .empty-icon svg {
+        width: 34px;
+        height: 34px;
+        display: block;
       }
       .empty-label {
         font-family: var(--mono);
@@ -308,6 +321,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+      .icon-btn svg {
+        width: 16px;
+        height: 16px;
+        display: block;
       }
       .icon-btn:hover {
         color: var(--text);
@@ -500,12 +518,46 @@
           <div class="logo-sub">Priority Rules</div>
         </div>
       </div>
-      <button class="add-btn" id="open-modal-btn">+ New Rule</button>
+      <button class="add-btn" id="open-modal-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-plus-icon lucide-plus"
+        >
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>
+        New Rule
+      </button>
     </header>
 
     <div id="rules-container">
       <div class="empty-state" id="empty-state">
-        <div class="empty-icon">📂</div>
+        <div class="empty-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-folder-open-icon lucide-folder-open"
+          >
+            <path
+              d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
+            />
+          </svg>
+        </div>
         <div class="empty-label">No rules yet</div>
         <div
           style="
