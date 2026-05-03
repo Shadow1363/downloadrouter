@@ -2,9 +2,8 @@
 
 <div align="center">
   <p>A free, open-source Chrome extension that automatically routes your downloads into organized folders based on custom priority rules — by domain, file type, or filename pattern.</p>
-  <img width="400" alt="Screenshot 2026-05-02 at 01 33 47" src="https://github.com/user-attachments/assets/3a90012d-46ca-4316-8552-56c903ad7113" />
-  &nbsp;&nbsp;
-  <img width="400" alt="Screenshot 2026-05-02 at 01 39 56" src="https://github.com/user-attachments/assets/fa0e2301-4201-49a1-8998-4ae79169b7be" />
+  <img width="640" height="400" alt="Sort downloads" src="https://github.com/user-attachments/assets/d91aaf3b-c108-44e1-9729-51be9bd0f1ce" />
+  <img width="640" height="400" alt="Save Images" src="https://github.com/user-attachments/assets/bcbdd6f8-e1e7-4992-b968-a4d271357820" />
 </div>
 
 ## Features
