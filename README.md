@@ -36,7 +36,12 @@ A `.png` downloaded from `gameassets.com` lands in `Downloads/gameassets` — P1
 3. Enable **Developer Mode** (top-right toggle)
 4. Click **Load unpacked** and select the project folder
 
-## Roadmap
+## Build
+
+1. Run `node build.js`
+2. The extension will be built in the `build` folder
+
+`## Roadmap
 
 - [ ] Support saving outside the default Downloads folder
 - [ ] Light & Dark mode
