@@ -1,11 +1,21 @@
 {
   "manifest_version": 3,
   "name": "Download Router",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Route downloads to specific folders based on priority rules (domain, file type, filename pattern).",
   "permissions": ["downloads", "storage", "contextMenus"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "download-router@local",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
   },
   "action": {
     "default_popup": "popup.html",

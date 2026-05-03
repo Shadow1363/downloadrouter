@@ -51,31 +51,7 @@ function renderRules() {
     card.draggable = true;
 
     const typeLabels = { domain: "Domain", extension: "Ext", pattern: "Regex" };
-
-    card.innerHTML = `
-      <div class="drag-handle" title="Drag to reorder">⠿</div>
-      <div class="priority-badge">${rule.priority}</div>
-      <div class="rule-info">
-        <div class="rule-type-value">
-          <span class="type-chip ${rule.type}">${typeLabels[rule.type] || rule.type}</span>
-          <span class="rule-value">${escHtml(rule.value)}</span>
-        </div>
-        <div class="rule-folder">→ <span>${escHtml(rule.folder)}</span></div>
-      </div>
-      <div class="rule-actions">
-        <label class="toggle" title="${rule.enabled === false ? "Enable" : "Disable"} rule">
-          <input type="checkbox" ${rule.enabled !== false ? "checked" : ""} data-action="toggle" data-id="${rule.id}">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-        <button class="icon-btn" data-action="edit" data-id="${rule.id}" title="Edit">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
-        </button>
-        <button class="icon-btn danger" data-action="delete" data-id="${rule.id}" title="Delete">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        </button>
-      </div>
-    `;
+    buildRuleCard(card, rule, typeLabels);
 
     // Drag events
     card.addEventListener("dragstart", (e) => {
@@ -108,6 +84,125 @@ function renderRules() {
   });
 
   scheduleRulesContainerSizing();
+}
+
+function buildRuleCard(card, rule, typeLabels) {
+  const dragHandle = document.createElement("div");
+  dragHandle.className = "drag-handle";
+  dragHandle.title = "Drag to reorder";
+  dragHandle.textContent = "⠿";
+
+  const priorityBadge = document.createElement("div");
+  priorityBadge.className = "priority-badge";
+  priorityBadge.textContent = String(rule.priority ?? "");
+
+  const ruleInfo = document.createElement("div");
+  ruleInfo.className = "rule-info";
+
+  const ruleTypeValue = document.createElement("div");
+  ruleTypeValue.className = "rule-type-value";
+
+  const typeChip = document.createElement("span");
+  typeChip.className = `type-chip ${rule.type ?? ""}`;
+  typeChip.textContent = typeLabels[rule.type] || rule.type;
+
+  const ruleValue = document.createElement("span");
+  ruleValue.className = "rule-value";
+  ruleValue.textContent = String(rule.value ?? "");
+
+  ruleTypeValue.appendChild(typeChip);
+  ruleTypeValue.appendChild(ruleValue);
+
+  const ruleFolder = document.createElement("div");
+  ruleFolder.className = "rule-folder";
+  ruleFolder.append("→ ");
+
+  const folderValue = document.createElement("span");
+  folderValue.textContent = String(rule.folder ?? "");
+  ruleFolder.appendChild(folderValue);
+
+  ruleInfo.appendChild(ruleTypeValue);
+  ruleInfo.appendChild(ruleFolder);
+
+  const ruleActions = document.createElement("div");
+  ruleActions.className = "rule-actions";
+
+  const toggleLabel = document.createElement("label");
+  toggleLabel.className = "toggle";
+  toggleLabel.title = `${rule.enabled === false ? "Enable" : "Disable"} rule`;
+
+  const toggleInput = document.createElement("input");
+  toggleInput.type = "checkbox";
+  toggleInput.checked = rule.enabled !== false;
+  toggleInput.dataset.action = "toggle";
+  toggleInput.dataset.id = rule.id;
+
+  const toggleTrack = document.createElement("div");
+  toggleTrack.className = "toggle-track";
+
+  const toggleThumb = document.createElement("div");
+  toggleThumb.className = "toggle-thumb";
+
+  toggleLabel.appendChild(toggleInput);
+  toggleLabel.appendChild(toggleTrack);
+  toggleLabel.appendChild(toggleThumb);
+
+  const editBtn = document.createElement("button");
+  editBtn.className = "icon-btn";
+  editBtn.dataset.action = "edit";
+  editBtn.dataset.id = rule.id;
+  editBtn.title = "Edit";
+  editBtn.appendChild(
+    createLucideSvg([
+      { d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" },
+      { d: "m15 5 4 4" },
+    ]),
+  );
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "icon-btn danger";
+  deleteBtn.dataset.action = "delete";
+  deleteBtn.dataset.id = rule.id;
+  deleteBtn.title = "Delete";
+  deleteBtn.appendChild(
+    createLucideSvg([
+      { d: "M10 11v6" },
+      { d: "M14 11v6" },
+      { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" },
+      { d: "M3 6h18" },
+      { d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" },
+    ]),
+  );
+
+  ruleActions.appendChild(toggleLabel);
+  ruleActions.appendChild(editBtn);
+  ruleActions.appendChild(deleteBtn);
+
+  card.appendChild(dragHandle);
+  card.appendChild(priorityBadge);
+  card.appendChild(ruleInfo);
+  card.appendChild(ruleActions);
+}
+
+function createLucideSvg(paths) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svg.setAttribute("width", "24");
+  svg.setAttribute("height", "24");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "2");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+
+  for (const { d } of paths) {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    svg.appendChild(path);
+  }
+
+  return svg;
 }
 
 function scheduleRulesContainerSizing() {
