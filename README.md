@@ -40,14 +40,16 @@ A `.png` downloaded from `gameassets.com` lands in `Downloads/gameassets` — P1
 1. Run `node build.js`
 2. The extension will be built in the `build` folder
 
-`## Roadmap
+## Roadmap
 
 - [ ] Support saving outside the default Downloads folder
 - [ ] Light & Dark mode
 - [ ] UI improvements
 - [ ] Export Rules to JSON
 - [ ] More file options to download with Router (.pdf, .docx, .xlsx, etc.)
-- [ ] Other browsers support (Firefox, Safari, etc.)
+- [ ] Other browsers support
+  - [x] Firefox
+  - [ ] Safari
 
 ## Credits
 
