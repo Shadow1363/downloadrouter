@@ -154,7 +154,9 @@ function buildRuleCard(card, rule, typeLabels) {
   editBtn.title = "Edit";
   editBtn.appendChild(
     createLucideSvg([
-      { d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" },
+      {
+        d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      },
       { d: "m15 5 4 4" },
     ]),
   );
@@ -293,7 +295,16 @@ segBtns.forEach((btn) => {
     btn.classList.add("active");
     selectedType = btn.dataset.type;
     updateTypeUI();
+    if (selectedType === "domain") {
+      ruleValueInput.value = normalizeDomainValue(ruleValueInput.value);
+    }
   });
+});
+
+ruleValueInput.addEventListener("blur", () => {
+  if (selectedType === "domain") {
+    ruleValueInput.value = normalizeDomainValue(ruleValueInput.value);
+  }
 });
 
 function updateTypeUI() {
@@ -328,7 +339,10 @@ function openModal(id = null) {
     const rule = rules.find((r) => r.id === id);
     modalTitle.textContent = "Edit Rule";
     selectedType = rule.type;
-    ruleValueInput.value = rule.value;
+    ruleValueInput.value =
+      selectedType === "domain"
+        ? normalizeDomainValue(rule.value)
+        : String(rule.value ?? "");
     ruleFolderInput.value = rule.folder;
     rulePriorityInput.value = rule.priority;
   } else {
@@ -359,7 +373,9 @@ function closeModal() {
 }
 
 saveBtn.addEventListener("click", () => {
-  const value = ruleValueInput.value.trim();
+  const rawValue = ruleValueInput.value.trim();
+  const value =
+    selectedType === "domain" ? normalizeDomainValue(rawValue) : rawValue;
   const folder = ruleFolderInput.value.trim();
   const priority = parseInt(rulePriorityInput.value, 10);
 
@@ -374,6 +390,10 @@ saveBtn.addEventListener("click", () => {
   if (!priority || priority < 1) {
     shake(rulePriorityInput);
     return;
+  }
+
+  if (selectedType === "domain") {
+    ruleValueInput.value = value;
   }
 
   if (editingId) {
@@ -399,6 +419,24 @@ saveBtn.addEventListener("click", () => {
 // ── UTILS ─────────────────────────────────────────────────────────────────────
 function saveRules() {
   chrome.storage.sync.set({ rules });
+}
+
+function normalizeDomainValue(value) {
+  let v = String(value ?? "").trim();
+  if (!v) return "";
+
+  try {
+    const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(v);
+    v = new URL(hasScheme ? v : `https://${v}`).hostname;
+  } catch {
+    v = v.replace(/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//, "");
+    v = v.split(/[/?#]/)[0];
+    v = v.split("@").pop() || "";
+    v = v.replace(/:\d+$/, "");
+  }
+
+  v = v.replace(/^www\./i, "").toLowerCase();
+  return v;
 }
 
 function escHtml(str) {

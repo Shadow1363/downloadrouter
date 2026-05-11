@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Download Router",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Route downloads to specific folders based on priority rules (domain, file type, filename pattern).",
   "permissions": ["downloads", "storage", "contextMenus"],
   "browser_specific_settings": {
@@ -14,8 +14,7 @@
     }
   },
   "background": {
-    "service_worker": "background.js",
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",

@@ -15,6 +15,24 @@ chrome.contextMenus.onClicked.addListener((info, _tab) => {
   }
 });
 
+function normalizeHostname(value) {
+  let v = String(value ?? "").trim();
+  if (!v) return "";
+
+  try {
+    const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(v);
+    v = new URL(hasScheme ? v : `https://${v}`).hostname;
+  } catch {
+    v = v.replace(/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//, "");
+    v = v.split(/[/?#]/)[0];
+    v = v.split("@").pop() || "";
+    v = v.replace(/:\d+$/, "");
+  }
+
+  v = v.replace(/^www\./i, "").toLowerCase();
+  return v;
+}
+
 // ── DOWNLOAD INTERCEPTION ─────────────────────────────────────────────────────
 function computeRoutedPath(downloadItem, rules) {
   if (!rules?.length) return null;
@@ -28,10 +46,7 @@ function computeRoutedPath(downloadItem, rules) {
     ? "." + baseFilename.split(".").pop().toLowerCase()
     : "";
 
-  let hostname = "";
-  try {
-    hostname = new URL(url).hostname.replace(/^www\./, "");
-  } catch {}
+  const hostname = normalizeHostname(url);
 
   for (const rule of sorted) {
     if (rule.enabled === false) continue;
@@ -39,12 +54,11 @@ function computeRoutedPath(downloadItem, rules) {
     let matched = false;
 
     if (rule.type === "domain") {
-      const ruleHost = String(rule.value || "")
-        .replace(/^www\./, "")
-        .toLowerCase();
+      const ruleHost = normalizeHostname(rule.value);
       matched =
-        hostname.toLowerCase() === ruleHost ||
-        hostname.toLowerCase().endsWith("." + ruleHost);
+        !!ruleHost &&
+        !!hostname &&
+        (hostname === ruleHost || hostname.endsWith("." + ruleHost));
     } else if (rule.type === "extension") {
       const ruleExt = String(rule.value || "").startsWith(".")
         ? String(rule.value || "").toLowerCase()
